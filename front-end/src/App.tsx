@@ -4,8 +4,6 @@ import Dashboard from './Components/Dashboard'
 import Signup from "./Components/Signup"
 import { AuthContext, AuthProvider } from "./Helpers/AuthContext"
 import React, { JSX, useContext } from "react";
-import CreateQR from "./Pages/CreateQR"
-
 const ProtectedRoute: React.FC<{ element: JSX.Element }> = ({ element }) => {
   const auth = useContext(AuthContext);
   return auth?.isAuthenticated ? element : <Navigate to="/login" />;
@@ -21,8 +19,6 @@ function App() {
         <Route path="/login" element={isAuthenticated ? <Navigate to="/dashboard" /> : <Login />} />
         <Route path="/signup" element={isAuthenticated ? <Navigate to="/dashboard" /> : <Signup />} />
         <Route path="/dashboard/*" element={<ProtectedRoute element={<Dashboard />} />} />
-        {/* <Route path="/dashboard/create-qr" element={<ProtectedRoute element={<Dashboard />} />} /> */}
-        {/* <Route path="/dashboard/*" element={isAuthenticated ? <Dashboard /> : <Navigate to="/login" />} /> */}
         <Route path="/" element={<Navigate to="/login" />} />
       </Routes>
     </Router>

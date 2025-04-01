@@ -13,7 +13,7 @@ interface QRCodeData {
 const QrDetails: React.FC = () => {
   const [qrCodes, setQrCodes] = useState<QRCodeData[]>([]);
 
-  // ✅ Fetch QR Codes from Backend
+  //  Fetch QR Codes from Backend
   useEffect(() => {
     const fetchQRCodes = async () => {
       try {
@@ -33,8 +33,8 @@ const QrDetails: React.FC = () => {
     )}`;
   };
 
-  // ✅ Function to Download QR Code Image
-  // ✅ Fix Download QR Code Image
+  //  Function to Download QR Code Image
+  //  Fix Download QR Code Image
   // const handleDownload = async (imageUrl: string, exactPlaceName: string, description: string) => {
   //   try {
   //     const response = await axios.get(`http://localhost:5000${imageUrl}`, {
@@ -44,7 +44,7 @@ const QrDetails: React.FC = () => {
   //     const img = new Image();
   //     img.src = window.URL.createObjectURL(new Blob([response.data]));
   //     img.onload = () => {
-  //       // ✅ Create a Canvas
+  //       //  Create a Canvas
   //       const canvas = document.createElement("canvas");
   //       const ctx = canvas.getContext("2d");
   
@@ -53,32 +53,32 @@ const QrDetails: React.FC = () => {
   //         return;
   //       }
   
-  //       // ✅ Set Canvas Size (QR Code + Extra Space for Text)
+  //       //  Set Canvas Size (QR Code + Extra Space for Text)
   //       const qrSize = 300; // Size of QR code
   //       const textHeight = 70; // Extra space for text
   //       canvas.width = qrSize;
   //       canvas.height = qrSize + textHeight; // Total height
   
-  //       // ✅ Draw the QR Code on Canvas
+  //       //  Draw the QR Code on Canvas
   //       ctx.drawImage(img, 0, 0, qrSize, qrSize);
   
-  //       // ✅ Add Black Background for Text Area
+  //       //  Add Black Background for Text Area
   //       ctx.fillStyle = "black";
   //       ctx.fillRect(0, qrSize, qrSize, textHeight); // Black background
   
-  //       // ✅ Add Styled Text (White)
+  //       //  Add Styled Text (White)
   //       ctx.fillStyle = "white";
   //       ctx.textAlign = "center";
   
-  //       // ✅ Exact Place Name (Bold, Larger)
+  //       //  Exact Place Name (Bold, Larger)
   //       ctx.font = "bold 18px Arial";
   //       ctx.fillText(exactPlaceName, qrSize / 2, qrSize + 25);
   
-  //       // ✅ Description (Normal, Slightly Smaller)
+  //       //  Description (Normal, Slightly Smaller)
   //       ctx.font = "16px Arial";
   //       ctx.fillText(description, qrSize / 2, qrSize + 50);
   
-  //       // ✅ Convert to Image & Download
+  //       //  Convert to Image & Download
   //       const finalImage = canvas.toDataURL("image/png");
   //       const link = document.createElement("a");
   //       link.href = finalImage;
@@ -87,7 +87,7 @@ const QrDetails: React.FC = () => {
   //       link.click();
   //       document.body.removeChild(link);
   
-  //       // ✅ Clean up
+  //       //  Clean up
   //       window.URL.revokeObjectURL(img.src);
   //     };
   //   } catch (error) {
@@ -105,7 +105,7 @@ const QrDetails: React.FC = () => {
       const img = new Image();
       img.src = window.URL.createObjectURL(new Blob([response.data]));
       img.onload = () => {
-        // ✅ Create Canvas
+        //  Create Canvas
         const canvas = document.createElement("canvas");
         const ctx = canvas.getContext("2d");
   
@@ -114,28 +114,28 @@ const QrDetails: React.FC = () => {
           return;
         }
   
-        // ✅ Set Canvas Size (QR Code + Extra Space for Text)
+        //  Set Canvas Size (QR Code + Extra Space for Text)
         const qrSize = 300; // QR code size
         const textHeight = 100; // Increased space for text
         canvas.width = qrSize;
         canvas.height = qrSize + textHeight;
   
-        // ✅ Draw QR Code on Canvas
+        //  Draw QR Code on Canvas
         ctx.drawImage(img, 0, 0, qrSize, qrSize);
   
-        // ✅ Add Black Background for Text Area
+        //  Add Black Background for Text Area
         ctx.fillStyle = "white";
         ctx.fillRect(0, qrSize, qrSize, textHeight);
   
-        // ✅ Set Text Styles
+        //  Set Text Styles
         ctx.fillStyle = "black";
         ctx.textAlign = "center";
   
-        // ✅ Draw Exact Place Name (Bold)
+        //  Draw Exact Place Name (Bold)
         ctx.font = "bold 18px Arial";
         ctx.fillText(exactPlaceName, qrSize / 2, qrSize + 25);
   
-        // ✅ Draw Wrapped Description (Auto Wrap Text)
+        //  Draw Wrapped Description (Auto Wrap Text)
         ctx.font = "16px Arial";
         const words = description.split(" ");
         let line = "";
@@ -156,7 +156,7 @@ const QrDetails: React.FC = () => {
         }
         ctx.fillText(line, qrSize / 2, y); // Draw last line
   
-        // ✅ Convert Canvas to Image & Download
+        //  Convert Canvas to Image & Download
         const finalImage = canvas.toDataURL("image/png");
         const link = document.createElement("a");
         link.href = finalImage;
@@ -165,7 +165,7 @@ const QrDetails: React.FC = () => {
         link.click();
         document.body.removeChild(link);
   
-        // ✅ Clean up
+        //  Clean up
         window.URL.revokeObjectURL(img.src);
       };
     } catch (error) {
@@ -175,7 +175,7 @@ const QrDetails: React.FC = () => {
   };
   
   
-  // ✅ Function to Delete a QR Code
+  //  Function to Delete a QR Code
   const handleDelete = async (id: number) => {
     if (!window.confirm("Are you sure you want to delete this QR code?"))
       return;

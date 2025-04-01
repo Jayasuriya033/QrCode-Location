@@ -4,12 +4,12 @@ import CreateQR from "../Pages/CreateQR";
 import { useEffect, useState } from "react";
 import QrDetails from "../Pages/QrDetails";
 import Settings from "../Pages/Settings";
-import { FaUserCircle } from "react-icons/fa"; // ✅ Import profile icon
+import { FaUserCircle } from "react-icons/fa"; //  Import profile icon
 
 const Dashboard: React.FC = () => {
   const [title, setTitle] = useState("Home");
   const location = useLocation();
-  const [isProfileOpen, setIsProfileOpen] = useState(false); // ✅ Track profile visibility
+  const [isProfileOpen, setIsProfileOpen] = useState(false); //  Track profile visibility
 
   // Update title dynamically based on the current route
   useEffect(() => {
@@ -44,7 +44,7 @@ const Dashboard: React.FC = () => {
           {/* Profile Icon Button (Top Right) */}
           <button 
             className="absolute top-4 right-6 text-gray-700 hover:text-gray-900 text-3xl"
-            onClick={() => setIsProfileOpen(!isProfileOpen)} // ✅ Toggle profile visibility
+            onClick={() => setIsProfileOpen(!isProfileOpen)} //  Toggle profile visibility
           >
             <FaUserCircle />
           </button>

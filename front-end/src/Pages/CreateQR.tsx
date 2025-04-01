@@ -44,14 +44,14 @@ const CreateQR: React.FC = () => {
       const blob = await response.blob();
       const file = new File([blob], "qr_code.png", { type: "image/png" });
 
-      // ✅ Prepare FormData for Upload
+      //  Prepare FormData for Upload
       const formData = new FormData();
       formData.append("destination", destination);
       formData.append("exactPlaceName", exactPlaceName);
       formData.append("description", description);
       formData.append("qrImage", file);
 
-      // ✅ Send Data to Backend
+      //  Send Data to Backend
       const res = await axios.post("save-qr", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
@@ -59,7 +59,7 @@ const CreateQR: React.FC = () => {
       if (res.status === 201) {
         alert("QR Code saved successfully!");
         setDestination("");
-        setExactPlaceName(""); // ✅ Reset field
+        setExactPlaceName(""); //  Reset field
         setDescription("");
         setQrImage(null);
       }
@@ -87,7 +87,7 @@ const CreateQR: React.FC = () => {
     const img = new Image();
     img.src = qrImage;
     img.onload = () => {
-      // ✅ Create Canvas
+      //  Create Canvas
       const canvas = document.createElement("canvas");
       const ctx = canvas.getContext("2d");
   
@@ -96,28 +96,28 @@ const CreateQR: React.FC = () => {
         return;
       }
   
-      // ✅ Set Canvas Size (QR Code + Extra Space for Text)
+      //  Set Canvas Size (QR Code + Extra Space for Text)
       const qrSize = 300; // QR code size
       const textHeight = 100; // Increased space for text
       canvas.width = qrSize;
       canvas.height = qrSize + textHeight; // Total height
   
-      // ✅ Draw QR Code on Canvas
+      //  Draw QR Code on Canvas
       ctx.drawImage(img, 0, 0, qrSize, qrSize);
   
-      // ✅ Add Black Background for Text Area
+      //  Add Black Background for Text Area
       ctx.fillStyle = "white";
       ctx.fillRect(0, qrSize, qrSize, textHeight);
   
-      // ✅ Set Text Styles
+      //  Set Text Styles
       ctx.fillStyle = "black";
       ctx.textAlign = "center";
   
-      // ✅ Draw Exact Place Name (Bold)
+      //  Draw Exact Place Name (Bold)
       ctx.font = "bold 18px Arial";
       ctx.fillText(exactPlaceName, qrSize / 2, qrSize + 25);
   
-      // ✅ Wrap and Draw Description (Auto-Wrap Text)
+      //  Wrap and Draw Description (Auto-Wrap Text)
       ctx.font = "16px Arial";
       const words = description.split(" ");
       let line = "";
@@ -138,7 +138,7 @@ const CreateQR: React.FC = () => {
       }
       ctx.fillText(line, qrSize / 2, y); // Draw last line
   
-      // ✅ Convert Canvas to Image & Download
+      //  Convert Canvas to Image & Download
       const finalImage = canvas.toDataURL("image/png");
       const link = document.createElement("a");
       link.href = finalImage;
@@ -149,7 +149,7 @@ const CreateQR: React.FC = () => {
       link.click();
       document.body.removeChild(link);
   
-      // ✅ Clean up memory
+      //  Clean up memory
       window.URL.revokeObjectURL(img.src);
     };
   };
@@ -171,7 +171,7 @@ const CreateQR: React.FC = () => {
           />
         </div>
 
-        {/* ✅ Exact Place Name Input */}
+        {/*  Exact Place Name Input */}
         <div>
           <label className="block text-gray-700">Exact Place Name:</label>
           <input

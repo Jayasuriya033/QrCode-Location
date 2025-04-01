@@ -33,68 +33,6 @@ const QrDetails: React.FC = () => {
     )}`;
   };
 
-  //  Function to Download QR Code Image
-  //  Fix Download QR Code Image
-  // const handleDownload = async (imageUrl: string, exactPlaceName: string, description: string) => {
-  //   try {
-  //     const response = await axios.get(`http://localhost:5000${imageUrl}`, {
-  //       responseType: "blob",
-  //     });
-  
-  //     const img = new Image();
-  //     img.src = window.URL.createObjectURL(new Blob([response.data]));
-  //     img.onload = () => {
-  //       //  Create a Canvas
-  //       const canvas = document.createElement("canvas");
-  //       const ctx = canvas.getContext("2d");
-  
-  //       if (!ctx) {
-  //         console.error("Canvas rendering not supported");
-  //         return;
-  //       }
-  
-  //       //  Set Canvas Size (QR Code + Extra Space for Text)
-  //       const qrSize = 300; // Size of QR code
-  //       const textHeight = 70; // Extra space for text
-  //       canvas.width = qrSize;
-  //       canvas.height = qrSize + textHeight; // Total height
-  
-  //       //  Draw the QR Code on Canvas
-  //       ctx.drawImage(img, 0, 0, qrSize, qrSize);
-  
-  //       //  Add Black Background for Text Area
-  //       ctx.fillStyle = "black";
-  //       ctx.fillRect(0, qrSize, qrSize, textHeight); // Black background
-  
-  //       //  Add Styled Text (White)
-  //       ctx.fillStyle = "white";
-  //       ctx.textAlign = "center";
-  
-  //       //  Exact Place Name (Bold, Larger)
-  //       ctx.font = "bold 18px Arial";
-  //       ctx.fillText(exactPlaceName, qrSize / 2, qrSize + 25);
-  
-  //       //  Description (Normal, Slightly Smaller)
-  //       ctx.font = "16px Arial";
-  //       ctx.fillText(description, qrSize / 2, qrSize + 50);
-  
-  //       //  Convert to Image & Download
-  //       const finalImage = canvas.toDataURL("image/png");
-  //       const link = document.createElement("a");
-  //       link.href = finalImage;
-  //       link.download = `${exactPlaceName}_QR_Code.png`;
-  //       document.body.appendChild(link);
-  //       link.click();
-  //       document.body.removeChild(link);
-  
-  //       //  Clean up
-  //       window.URL.revokeObjectURL(img.src);
-  //     };
-  //   } catch (error) {
-  //     console.error("Error downloading QR Code:", error);
-  //     alert("Failed to download QR Code.");
-  //   }
-  // };
 
   const handleDownload = async (imageUrl: string, exactPlaceName: string, description: string) => {
     try {

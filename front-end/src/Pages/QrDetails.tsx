@@ -36,7 +36,7 @@ const QrDetails: React.FC = () => {
 
   const handleDownload = async (imageUrl: string, exactPlaceName: string, description: string) => {
     try {
-      const response = await axios.get(`http://localhost:5000${imageUrl}`, {
+      const response = await axios.get(`${imageUrl}`, {
         responseType: "blob",
       });
   
@@ -113,14 +113,13 @@ const QrDetails: React.FC = () => {
   };
   
   
-  //  Function to Delete a QR Code
   const handleDelete = async (id: number) => {
     if (!window.confirm("Are you sure you want to delete this QR code?"))
       return;
 
     try {
       await axios.delete(`/delete-qr/${id}`);
-      setQrCodes(qrCodes.filter((qr) => qr.id !== id)); // Remove from UI
+      setQrCodes(qrCodes.filter((qr) => qr.id !== id)); 
       alert("QR Code deleted successfully!");
     } catch (error) {
       console.error("Error deleting QR Code:", error);
@@ -130,10 +129,6 @@ const QrDetails: React.FC = () => {
 
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-md">
-      {/* <h2 className="text-2xl font-bold text-center text-gray-800 mb-4">
-        QR Code Details
-      </h2> */}
-
       {qrCodes.length === 0 ? (
         <p className="text-center text-gray-500">No QR Codes available.</p>
       ) : (
@@ -144,9 +139,7 @@ const QrDetails: React.FC = () => {
               className="p-4 border rounded-lg shadow-lg bg-gray-100"
             >
               <img
-                src={`http://localhost:5000/uploads/${qr.image
-                  .split("/")
-                  .pop()}`}
+                src={`${qr.image}`}
                 alt={`QR Code for ${qr.destination}`}
                 className="w-40 h-40 mx-auto"
               />

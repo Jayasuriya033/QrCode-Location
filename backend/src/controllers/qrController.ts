@@ -9,17 +9,17 @@ const prisma = new PrismaClient();
 //  Save QR Code to Database
 export const saveQRCode = async (req: AuthRequest, res: Response): Promise<any> => {
   try {
-    const { exactPlaceName, destination, description } = req.body;
-    const qrImage = req.file ? `/uploads/${req.file.filename}` : null;
+    const { exactPlaceName, destination, description, uploadUrl } = req.body;
+    // const uploadUrl = req.file ? `/uploads/${req.file.filename}` : null;
     if (!req.user) {
       return res.status(401).json({ message: "Unauthorized" });
     }
-    if (!exactPlaceName || !destination || !description || !qrImage) {
+    if (!exactPlaceName || !destination || !description || !uploadUrl) {
       return res.status(400).json({ message: "All fields are required" });
     }
 
     const newQR = await prisma.qRCode.create({
-      data: { exactPlaceName, destination, description, image: qrImage , userId : req.user.userId},
+      data: { exactPlaceName, destination, description, image: uploadUrl , userId : req.user.userId},
     });
 
     return res.status(201).json({ message: "QR Code saved successfully!", data: newQR });

@@ -6,7 +6,8 @@ import { authenticate } from "../middlewares/authMiddleware";
 const router = express.Router();
 
 //  POST: Save QR Code with Image
-router.post("/save-qr", authenticate, upload.single("qrImage"), saveQRCode);
+// router.post("/save-qr", authenticate, upload.single("qrImage"), saveQRCode);
+router.post("/save-qr", authenticate, saveQRCode);
 
 //  GET: Fetch All QR Codes
 router.get("/get-all",authenticate, getAllQRCodes);

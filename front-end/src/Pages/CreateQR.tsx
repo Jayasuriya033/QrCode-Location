@@ -4,14 +4,16 @@ import axios from "../Helpers/api";
 
 const CreateQR: React.FC = () => {
   const [destination, setDestination] = useState<string>("");
-  const [exactPlaceName, setExactPlaceName] = useState<string>(""); 
+  const [exactPlaceName, setExactPlaceName] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [qrImage, setQrImage] = useState<string | null>(null);
   const qrRef = useRef<HTMLImageElement | null>(null);
 
   // Function to generate a Google Maps link
   const generateGoogleMapsURL = (destination: string) => {
-    return `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(destination)}`;
+    return `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
+      destination
+    )}`;
   };
 
   // Function to generate QR Code
@@ -32,50 +34,67 @@ const CreateQR: React.FC = () => {
     }
   };
 
-  // Function to save QR Code data to database
   const handleSaveQR = async () => {
     if (!qrImage) {
       alert("Generate QR Code first.");
       return;
     }
-
+  
     try {
+      // Convert QR image URL to a File
       const response = await fetch(qrImage);
       const blob = await response.blob();
       const file = new File([blob], "qr_code.png", { type: "image/png" });
-
-      //  Prepare FormData for Upload
+  
+      // Upload to Cloudinary
       const formData = new FormData();
-      formData.append("destination", destination);
-      formData.append("exactPlaceName", exactPlaceName);
-      formData.append("description", description);
-      formData.append("qrImage", file);
-
-      //  Send Data to Backend
-      const res = await axios.post("save-qr", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
+      formData.append("file", file);
+      formData.append("upload_preset", "Qr-Location-Images");
+  
+      const uploadResponse = await fetch(
+        "https://api.cloudinary.com/v1_1/dsyb37mme/image/upload",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+  
+      if (!uploadResponse.ok) {
+        throw new Error(`Upload failed: ${uploadResponse.statusText}`);
+      }
+  
+      const uploadData = await uploadResponse.json();
+      console.log("Uploaded Image URL:", uploadData.secure_url);
+  
+      //  Image Url
+      const uploadedImageUrl = uploadData.secure_url;
+  
+      // Prepare Payload
+      const payload = {
+        exactPlaceName,
+        destination,
+        description,
+        uploadUrl: uploadedImageUrl, 
+      };
+  
+      // Send Data to Backend
+      const res = await axios.post("save-qr", payload, {
+        headers: { "Content-Type": "application/json" },
       });
-
+  
       if (res.status === 201) {
         alert("QR Code saved successfully!");
         setDestination("");
-        setExactPlaceName(""); //  Reset field
+        setExactPlaceName("");
         setDescription("");
         setQrImage(null);
       }
     } catch (error: any) {
-      if (
-        error.response &&
-        error.response.data &&
-        error.response.data.message
-      ) {
-        alert(error.response.data.message);
-      } else {
-        alert("Network error or Server Error");
-      }
+      alert("Network error or Server Error");
       console.error("Error saving QR Code:", error);
     }
   };
+  
 
   // Function to download QR Code as an image
   const downloadQR = () => {
@@ -83,51 +102,51 @@ const CreateQR: React.FC = () => {
       alert("Generate QR Code first.");
       return;
     }
-  
+
     const img = new Image();
     img.src = qrImage;
     img.onload = () => {
       //  Create Canvas
       const canvas = document.createElement("canvas");
       const ctx = canvas.getContext("2d");
-  
+
       if (!ctx) {
         console.error("Canvas rendering not supported");
         return;
       }
-  
+
       //  Set Canvas Size (QR Code + Extra Space for Text)
       const qrSize = 300; // QR code size
       const textHeight = 100; // Increased space for text
       canvas.width = qrSize;
       canvas.height = qrSize + textHeight; // Total height
-  
+
       //  Draw QR Code on Canvas
       ctx.drawImage(img, 0, 0, qrSize, qrSize);
-  
+
       //  Add Black Background for Text Area
       ctx.fillStyle = "white";
       ctx.fillRect(0, qrSize, qrSize, textHeight);
-  
+
       //  Set Text Styles
       ctx.fillStyle = "black";
       ctx.textAlign = "center";
-  
+
       //  Draw Exact Place Name (Bold)
       ctx.font = "bold 18px Arial";
       ctx.fillText(exactPlaceName, qrSize / 2, qrSize + 25);
-  
+
       //  Wrap and Draw Description (Auto-Wrap Text)
       ctx.font = "16px Arial";
       const words = description.split(" ");
       let line = "";
       let y = qrSize + 50; // Start Y position for description
       const maxWidth = qrSize - 20; // Max text width
-  
+
       for (let i = 0; i < words.length; i++) {
         const testLine = line + words[i] + " ";
         const testWidth = ctx.measureText(testLine).width;
-  
+
         if (testWidth > maxWidth) {
           ctx.fillText(line, qrSize / 2, y);
           line = words[i] + " ";
@@ -137,31 +156,34 @@ const CreateQR: React.FC = () => {
         }
       }
       ctx.fillText(line, qrSize / 2, y); // Draw last line
-  
+
       //  Convert Canvas to Image & Download
       const finalImage = canvas.toDataURL("image/png");
       const link = document.createElement("a");
       link.href = finalImage;
       const timestamp = new Date().toISOString().replace(/[-:.]/g, "_");
-      link.download = `QR_${exactPlaceName.replace(/\s+/g, "_")}_${timestamp}.png`;
-  
+      link.download = `QR_${exactPlaceName.replace(
+        /\s+/g,
+        "_"
+      )}_${timestamp}.png`;
+
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-  
+
       //  Clean up memory
       window.URL.revokeObjectURL(img.src);
     };
   };
-  
 
   return (
     <div className="max-w-lg mx-auto p-6 bg-white rounded-lg shadow-md">
-      
       <form onSubmit={handleGenerateQR} className="space-y-4">
         {/* Destination Location Input */}
         <div>
-          <label className="block text-gray-700">Exact Address(Latitude, Longitude):</label>
+          <label className="block text-gray-700">
+            Exact Address(Latitude, Longitude):
+          </label>
           <input
             type="text"
             value={destination}

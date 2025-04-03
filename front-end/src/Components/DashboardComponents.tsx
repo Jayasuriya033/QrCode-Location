@@ -83,8 +83,8 @@ export const UserProfile = () => {
   <div className="bg-white w-64 shadow-md p-6 absolute top-0 right-0 bottom-0 transform translate-x-full md:relative md:translate-x-0 transition duration-200 ease-in-out">
     <div className="flex flex-col items-center">
     <CgProfile className="text-gray-600 hover:text-gray-800 h-8 w-8" />
-      <h3 className="text-lg font-semibold">Harish</h3>
-      <p className="text-gray-600">harish.ganesan@gmail.com</p>
+      {/* <h3 className="text-lg font-semibold">js</h3> */}
+      <p className="text-gray-600">{localStorage.getItem("email")}</p>
     </div>
     <div className="mt-6 p-4 flex flex-col gap-y-4">
   <button className="w-full bg-purple-600 text-white py-2 px-4 rounded hover:bg-purple-700 transition duration-200">

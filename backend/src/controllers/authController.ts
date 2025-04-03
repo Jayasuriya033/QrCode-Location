@@ -63,7 +63,7 @@ export const login = async (req: Request, res: Response):Promise<any> => {
       expiresIn: "1d",
     });
 
-    res.json({ token });
+    res.json({ token:token, email : user.email });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });

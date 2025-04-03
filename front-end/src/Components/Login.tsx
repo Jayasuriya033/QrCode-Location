@@ -20,6 +20,7 @@ const Login: React.FC = () => {
       const response = await axios.post("/login", { email, password })
       if (response.data.token) {
         localStorage.setItem("token", response.data.token)
+        localStorage.setItem("email", response.data.email)
         auth?.login(response.data.token);
         navigate("/dashboard");
       }
